@@ -54,10 +54,9 @@ def add_ship():
     if form.validate_on_submit():
         ship_type = form.ship_type.data
         #ship_id = ShipType.query.filter_by(name=ship_type).first()
-        sType = ship_type.id
-        user = current_user.id
+        shiptype = ship_type.id
         ship = Ship(ship_name=form.ship_name.data,
-                    ship_type=sType)
+                    ship_type=shiptype)
         db.session.add(ship)
         flash('Your ship has been added.', 'info')
         if current_user.handle is None:
