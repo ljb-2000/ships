@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Edit Profile - TAS Corp.{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+
+    <h3>Edit Profile</h3>
+    <br>
+    <form method="POST">
+        {{ form.csrf_token }}
+        {{ wtf.quick_form(form) }}
+    </form>
+
+
+
+</div>
+{% endblock %}

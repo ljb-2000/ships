@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.handle }}'s Hangar{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+
+    <table border="0" cellpadding="1" cellspacing="1" style="width: 700px;">
+        <tbody>
+            <tr>
+                <td class="text-center">
+                    <img class="img-rounded profile-thumbnail" src="{{ user.gravatar() }}"><br>
+                </td>
+                <td>
+                    <br><br><h1 class="text-left">{{  user.handle }}</h1>
+                    <h6>Last seen {{ moment(user.last_login).fromNow() }}.</h6>
+                    {% if user.hide_email != True %}<a href="mailto:{{ user.email }}">{{ user.email }}</a>{% else %}{% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    {% if user.tas_profile != None or "" %}<a href="{{ user.tas_profile }}"  target="_blank">TAS Profile</a><br>{% endif %}
+                    {% if user.rsi_profile != None or "" %}<a href="{{ user.rsi_profile }}"  target="_blank">RSI Profile</a><br>{% endif %}
+                    {% if current_user.handle == user.handle %}<a href="{{ url_for('user.edit_profile') }}"  target="_self">Edit Profile</a><br>{% endif %}</td>
+                <td>
+                    <h2>Ship List</h2>
+                    {% for key, value in ships.iteritems() %}
+                        "{{ key }}" ({{ value }})<br>
+                    {% else %}
+                    This user has not added any ships.
+                    {% endfor %}
+                    <br>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+    <br>
+    <br>
+
+
+
+
+</div>
+{% endblock %}

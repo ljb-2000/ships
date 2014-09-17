@@ -2,6 +2,24 @@
 __pycache__/
 *.py[cod]
 
+# config
+config.py
+
+# migrations
+migrations/
+
+# pycharm
+.idea/
+
+# venv
+venv/
+
+# sqlite
+*.sqlite
+
+#charts
+*.svg
+
 # C extensions
 *.so
 

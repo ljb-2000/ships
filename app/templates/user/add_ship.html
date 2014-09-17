@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Add Ship - TAS Corp.{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <br>
+    {{ ship_type }}
+
+    <br>
+    {{ ship_id }}
+
+    <h3>Add-a-Ship</h3>
+    <form method="POST">
+        {{ form.csrf_token }}
+        {{ wtf.quick_form(form) }}
+    </form>
+
+
+
+</div>
+{% endblock %}

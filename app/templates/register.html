@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form method="POST" action="." role="form">
+{{ form.hidden_tag() }}
+    <div class="form-group">
+        <label>{{ form.email.label }}</label>
+        {{ form.email(class="form-control", placeholder="Your Email Address") }}
+    </div>
+    <div class="form-group">
+        <label>{{ form.password.label }}</label>
+        {{ form.password(class="form-control", placeholder="Choose a Password") }}
+    </div>
+    <div class="form-group">
+        {{ form.password_confirm(class="form-control", placeholder="Confirm Your Password") }}
+    </div>
+    <div class="form-group">
+        {{ form.submit(class="form-control", placeholder="submit") }}
+    </div>
+
+    <p><input id="register" name="register" type="submit" class="btn btn-default" value="Register"></p>
+</form>
+{% endblock %}
