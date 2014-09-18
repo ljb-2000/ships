@@ -67,5 +67,4 @@ def index():
         if x.cnt != "0":
             ship_list[x.name]=x.cnt
     data = convert(ship_list)
-
     return render_template("main/index.html", data=data)

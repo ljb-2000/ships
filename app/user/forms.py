@@ -27,7 +27,7 @@ class Register(Form):
 
 #-----
 class EditProfile(Form):
-    handle = StringField(label='Handle')
+    handle = StringField(label='Handle', validators = [DataRequired()])
     rsi_profile = StringField(label='RSI Profile')
     tas_profile = StringField(label='TAS Profile')
     hide_email = BooleanField(label='Hide Email On Profile?')

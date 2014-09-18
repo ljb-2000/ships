@@ -55,9 +55,12 @@ def add_ship():
         ship_type = form.ship_type.data
         #ship_id = ShipType.query.filter_by(name=ship_type).first()
         shiptype = ship_type.id
+        user = current_user
         ship = Ship(ship_name=form.ship_name.data,
                     ship_type=shiptype)
         db.session.add(ship)
+        ship.user.append(user)
+        db.session.commit()
         flash('Your ship has been added.', 'info')
         if current_user.handle is None:
             return redirect(url_for('main.index'))

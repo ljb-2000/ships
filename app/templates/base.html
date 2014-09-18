@@ -25,7 +25,9 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-left">
                 {% if current_user.is_authenticated() %}
+                {% if current_user.handle is not none %}
                 <li class="navbar-left"><a href="{{ url_for('user.add_ship') }}">Add Ships</a></li>
+                {% endif %}
                 <li class="navbar-left"><a href="{{ url_for('user.edit_profile') }}">Edit Profile</a></li>
                 <li class="navbar-left"><a href="{{ url_for('user.change_password') }}">Change Password</a></li>
                 {% endif %}
@@ -37,7 +39,7 @@
                 {% endif %}
                 {% endif %}
                 {% if current_user.is_authenticated() %}
-                <p class="navbar-text">Hello, {% if current_user.handle == None %}Stranger{% else %}<a href="{{ url_for('user.profile', handle=current_user.handle) }}">{{ current_user.handle }}</a>{% endif %}</p>
+                <p class="navbar-text">Hello, {% if current_user.handle is none %}Stranger{% else %}<a href="{{ url_for('user.profile', handle=current_user.handle) }}">{{ current_user.handle }}</a>{% endif %}</p>
                 <li><button type="button" class="btn btn-default navbar-btn"><a href="{{ url_for('user.logout') }}">Logout</a></button></li>
             </ul>
             {% else %}
