@@ -27,15 +27,13 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role',
                             secondary=user_roles,
                             backref=db.backref('users', lazy='dynamic'))
+    confirmed_at = db.Column(db.DateTime())
+    reset_password_token = db.Column(db.String(100), nullable=False, default='')
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
     last_login = db.Column(db.DateTime,  default=datetime.utcnow)
     ships_list = db.relationship('Ship',
                                  secondary=ship_list,
                                  backref=db.backref('user', lazy='dynamic'))
-    #def __init__(self, **kwargs):
-    #    if self.email is not None and self.avatar_hash is None:
-    #        self.avatar_hash = hashlib.md5(
-    #            self.email.encode('utf-8').hexdigest())
 
     def is_authenticated(self):
         return True
@@ -60,6 +58,8 @@ class User(db.Model, UserMixin):
             url = 'http://www.gravatar.com/avatar'
         hash = self.avatar_hash or hashlib.md5(
             self.email.encode('utf-8')).hexdigest()
+        if self.avatar_hash is None:
+            self.avatar_hash = hash
         return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
             url=url, hash=hash, size=size, default=default, rating=rating)
 
