@@ -5,14 +5,12 @@ from . import db
 from . import UserMixin
 
 ship_list = db.Table('ship_list',
-                     db.Column('id', db.Integer(), primary_key=True),
                      db.Column('owner_id', db.Integer, db.ForeignKey('user.id')),
                      db.Column('ship_id', db.Integer, db.ForeignKey('ship.id')))
 
 user_roles = db.Table('user_roles',
-                      db.Column('id', db.Integer(), primary_key=True),
-                      db.Column('user_id', db.Integer(), db.ForeignKey('user.id', ondelete='CASCADE')),
-                      db.Column('role_id', db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE')))
+                      db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+                      db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
 
 
 class User(db.Model, UserMixin):
@@ -26,7 +24,6 @@ class User(db.Model, UserMixin):
     avatar_hash = db.Column(db.String(32))
     rsi_profile = db.Column(db.String(255), nullable=True)
     tas_profile = db.Column(db.String(255), nullable=True)
-    reset_password_token = db.Column(db.String(100), nullable=False, default='')
     roles = db.relationship('Role',
                             secondary=user_roles,
                             backref=db.backref('users', lazy='dynamic'))
@@ -34,8 +31,7 @@ class User(db.Model, UserMixin):
     last_login = db.Column(db.DateTime,  default=datetime.utcnow)
     ships_list = db.relationship('Ship',
                                  secondary=ship_list,
-                                 backref=db.backref('user', lazy='dynamic'),
-                                 lazy='dynamic')
+                                 backref=db.backref('user', lazy='dynamic'))
     #def __init__(self, **kwargs):
     #    if self.email is not None and self.avatar_hash is None:
     #        self.avatar_hash = hashlib.md5(
@@ -67,15 +63,18 @@ class User(db.Model, UserMixin):
         return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
             url=url, hash=hash, size=size, default=default, rating=rating)
 
-    def __repr__(self):
-        return self.handle
+    def __unicode__(self):
+        if self.handle is None:
+            return self.email
+        else:
+            return self.handle
 
 class Role(db.Model):
     __tablename__ = 'role'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
 
-    def __repr__(self):
+    def __unicode__(self):
         return self.name
 
 class Ship(db.Model):
@@ -83,12 +82,8 @@ class Ship(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ship_type = db.Column(db.Integer, db.ForeignKey('shiptype.id'))
     ship_name = db.Column(db.String(255), unique=True)
-    #ship_owner = db.relationship('User',
-    #                             secondary=ship_list,
-    #                             backref=db.backref('owner', lazy='dynamic'),
-    #                             lazy='dynamic')
 
-    def __repr__(self):
+    def __unicode__(self):
         return self.ship_name
 
 class ShipType(db.Model):

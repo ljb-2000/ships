@@ -18,7 +18,8 @@ class AdminView(AdminIndexView):
         return self.render('admin/index.html')
 
     def is_accessible(self):
-        return current_user.is_authenticated()
+        if not current_user.is_authenticated(): return False
+        return current_user.has_roles('Admin')
 
 bootstrap = Bootstrap()
 mail = Mail()

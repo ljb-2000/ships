@@ -20,7 +20,7 @@ def profile(handle):
     ships = {}
     list = user.ships_list
     for x in list:
-        ship = Ship.query.filter_by(ship_name=x).first()
+        ship = Ship.query.filter_by(ship_name=x.ship_name).first()
         sid = ship.ship_type
         type = ShipType.query.filter_by(id=sid).first()
         name = type.name
@@ -53,11 +53,14 @@ def add_ship():
     form = AddShip()
     if form.validate_on_submit():
         ship_type = form.ship_type.data
-        #ship_id = ShipType.query.filter_by(name=ship_type).first()
         shiptype = ship_type.id
         user = current_user
         ship = Ship(ship_name=form.ship_name.data,
                     ship_type=shiptype)
+        ships = ShipType.query.filter_by(id=shiptype).first()
+        total = int(ships.cnt)
+        total += 1
+        ships.cnt = total
         db.session.add(ship)
         ship.user.append(user)
         db.session.commit()

@@ -1,6 +1,6 @@
 from flask import render_template, session, redirect, url_for, current_app, jsonify
 from .. import db, admin
-from ..models import User, ShipType, Role, Ship
+from ..models import User, ShipType, Role, Ship, ship_list
 from ..email import send_email
 from . import main
 from .forms import Login
@@ -18,7 +18,7 @@ class UserView(ModelView):
     column_list = ('active', 'email', 'handle', 'rsi_profile', 'tas_profile', 'role', 'created_on', 'last_seen')
     column_exclude_list = ('password', 'reset_password_token')
     column_searchable_list = ('email', 'handle')
-    form_excluded_columns = ('password', 'reset_password_token', 'created_on', 'last_login')
+    form_excluded_columns = ('password', 'reset_password_token', 'avatar_hash', 'created_on', 'last_login')
 
 class RoleView(ModelView):
     def is_accessible(self):
@@ -40,11 +40,10 @@ class ShipTypeView(ModelView):
     column_exclude_list = ('ship_name')
     form_excluded_columns = ('ship_name', 'cnt')
 
-admin.add_view(UserView(User, db.session, category='Data', endpoint='users'))
-admin.add_view(RoleView(Role, db.session, category='Data', endpoint='roles'))
-admin.add_view(ShipView(Ship, db.session, category='Data', endpoint='ships'))
-admin.add_view(ShipTypeView(ShipType, db.session, category='Data', endpoint='ship-type'))
-
+admin.add_view(UserView(User, db.session, endpoint='users'))
+admin.add_view(RoleView(Role, db.session, endpoint='roles'))
+#admin.add_view(ShipView(Ship, db.session, category='Data', endpoint='ships'))
+admin.add_view(ShipTypeView(ShipType, db.session, endpoint='ship-type'))
 
 def convert(data):
     if isinstance(data, basestring):
@@ -56,11 +55,15 @@ def convert(data):
     else:
         return data
 
+def ship_count():
+    ships = Ship.query.all()
+    for x in type:
+        x.name
+    pass
+
 @main.route('/', methods=['GET', 'POST'])
 def index():
-
     ship = ShipType.query.all()
-
     ship_list = {}
     data = {}
     for x in ship:
